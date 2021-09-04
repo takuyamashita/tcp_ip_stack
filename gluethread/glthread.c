@@ -2,7 +2,7 @@
 
 #include "glthread.h"
 
-void init_glthread(glthread_t glthread){
+void init_glthread(glthread_t *glthread){
 
     glthread->left = NULL;
     glthread->right = NULL;
@@ -34,7 +34,7 @@ void glthread_add_before(glthread_t *curr_glthread, glthread_t *new_glthread){
     
     if(!curr_glthread->left){
 	
-	new_glthred->left = NULL;
+	new_glthread->left = NULL;
 	new_glthread->right = curr_glthread;
 
 	curr_glthread->left = new_glthread;
@@ -103,15 +103,15 @@ void delete_glthread_list(glthread_t *base_glthread){
 void glthread_add_list(glthread_t *base_glthread, glthread_t *new_glthread){
     
     glthread_t *glthreadptr = NULL,
-	    *prevglthread = NULL;
+	    *prevglthreadptr = NULL;
     
     /* glthread->rightをprevglthreadに入れる(上書きしていく) */
     ITERATE_GLTHREAD_BEGIN(base_glthread, glthreadptr){
-	prevglthredptr = glthredptr;
+	prevglthreadptr = glthreadptr;
     } ITERATE_GLTHREAD_END(base_glthread, glthreadptr);
 
     /* base_glthreadの長さが1だと一周もしない */
-    if(prevglthread)
+    if(prevglthreadptr)
 	glthread_add_next(prevglthreadptr, new_glthread);
     else
 	glthread_add_next(base_glthread, new_glthread);
@@ -124,16 +124,16 @@ unsigned int get_glthread_list_count(glthread_t *base_glthread){
     unsigned int count = 0;
     glthread_t *glthreadptr = NULL;
 
-    ITERATE_GLTHREAD_BEGIN(begin_glthread, glthreadptr){
+    ITERATE_GLTHREAD_BEGIN(base_glthread, glthreadptr){
 	count ++;
-   } ITERATE_GLTHREAD_END(begin_glthread, glthreadptr);
+   } ITERATE_GLTHREAD_END(base_glthread, glthreadptr);
 
    return count;
 }
 
 /* データを基準にbase_glthreadの適切な位置にglthreadを挿入します */
 void glthread_priority_insert(
-    glthread *base_glthread,
+    glthread_t *base_glthread,
     glthread_t *glthread,
     int (*comp_fn)(void *, void *),
     int offset
@@ -179,7 +179,7 @@ void glthread_priority_insert(
      * base_glthreadの次に入れる  */
     if(comp_fn(
 	GLTHREAD_GET_USER_DATA_FROM_OFFSET(glthread, offset),
-	GLTHREAD_GET_USET_DATA_FROM_OFFSET(base_glthread->right, offset)
+	GLTHREAD_GET_USER_DATA_FROM_OFFSET(base_glthread->right, offset)
     ) == -1){
 	glthread_add_next(base_glthread, glthread);
 	return;

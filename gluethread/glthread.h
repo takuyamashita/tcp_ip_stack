@@ -13,13 +13,13 @@ typedef struct _glthread {
     /* 次のデータのポインタ*/
     struct _glthread *left;
     /* 前のデータのポインタ */
-    struct _glthread *tight;
-} gltread_t;
+    struct _glthread *right;
+} glthread_t;
 
 
-void glethread_add_next(glthread_t *base_glthread, glthread_t *new_glthread);
+void glthread_add_next(glthread_t *base_glthread, glthread_t *new_glthread);
 
-void glthread_add_before(glthead_t *base_glthread, glthread_t *new_glthread);
+void glthread_add_before(glthread_t *base_glthread, glthread_t *new_glthread);
 
 void glthread_add_last(glthread_t *base_glthread, glthread_t *new_glthread);
 
@@ -63,11 +63,11 @@ void init_glthread(glthread_t *glthread);
 /* イテレートのマクロ
  * BEGINとENDの間に簡単に処理を書ける
  * */
-#define ITERATE_GLTHREAD_BEGIN(glthreadptrstart, glthreadadptr){ \
+#define ITERATE_GLTHREAD_BEGIN(glthreadptrstart, glthreadptr){ \
     glthread_t *_glthread_ptr = NULL; \
     glthreadptr = BASE(glthreadptrstart); \
     for(; glthreadptr != NULL; glthreadptr = _glthread_ptr){ \
-	_glthreadptr = (glthreadptr)->right;
+	_glthread_ptr = (glthreadptr)->right;
 #define ITERATE_GLTHREAD_END(glthreadptrstart, glthreadptr) }}
 
 /* offset引いたアドレスを返す 使う側でキャストする */
