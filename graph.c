@@ -49,6 +49,14 @@ void insert_link_between_two_nodes(
 
     empty_intf_slot = get_node_intf_available_slot(node2);
     node2->intf[empty_intf_slot] = &link->intf2;
+
+    /* リンクのインターフェースのプロパティを初期化 */
+    init_intf_nw_prop(&link->intf1.intf_nw_props);
+    init_intf_nw_prop(&link->intf2.intf_nw_props);
+
+    /* ランダムなMACアドレスをインターフェースに付与 */
+    interface_assign_mac_address(&link->intf1);
+    interface_assign_mac_address(&link->intf2);
 }
 
 /* 新しくgraphを作成して返します */
