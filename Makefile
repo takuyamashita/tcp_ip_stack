@@ -4,6 +4,7 @@ TARGET:test
 
 OBJS=gluethread/glthread.o \
 	graph.o \
+	net.o \
 	topologies.o
 
 test:testapp.o ${OBJS}
@@ -14,6 +15,9 @@ testapp.o:testapp.c
 
 gluethread/glthred.o:gluethread/glthread.c
 	${CC} ${CFLAGS} -c -I gluethread gluethread/glthread.c -o gluethread/glthread.o
+
+net.o: net.h net.c
+	${CC} ${CFLAGS} -c -I . net.c -o net.o
 
 graph.o:graph.c graph.h
 	${CC} ${CFLAGS} -c -I . graph.c -o graph.o
