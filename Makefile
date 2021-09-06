@@ -1,14 +1,15 @@
 CC=gcc
 CFLAGS=-g
-TARGET:test
-LIBS=-lpthread -L ./CommandParser -lcli
+TARGET:test CommandParser/libcli.a
+LIBS=-lpthread -L ./CommandParser -lcli -lrt
 OBJS=gluethread/glthread.o \
 	graph.o \
 	net.o \
+	nwcli.o \
 	topologies.o
 
 test:testapp.o ${OBJS} CommandParser/libcli.a
-	${CC} ${CFLAGS} testapp.o ${OBJS} -o test ${LIBS}
+	${CC} ${CFLAGS} -z muldefs testapp.o ${OBJS} -o test ${LIBS}
 
 testapp.o:testapp.c
 	${CC} ${CFLAGS} -c testapp.c -o testapp.o
@@ -22,17 +23,23 @@ net.o: net.h net.c
 graph.o:graph.c graph.h
 	${CC} ${CFLAGS} -c -I . graph.c -o graph.o
 
-topologies.c:topologies.c
+topologies.o:topologies.c
 	${CC} ${CFLAGS} -c -I . topologies.c -o topologies.o
+
+#utils.o:utils.c
+#	${CC} ${CFLAGS} -c -I . utils.c -o utils.o
+
+nwcli.o:nwcli.c
+	${CC} ${CFLAGS} -c -I . nwcli.c -o nwcli.o
 
 CommandParser/libcli.a:
 	(cd CommandParser; make)
 
 clean:
-	rm *.o
-	rm gluethread/glthread.o
-	rm test
-	(cd CommandParser; make clean)
+	- rm *.o
+	- rm gluethread/glthread.o
+	- rm test
+	- (cd CommandParser; make clean)
 
 all:
 	make
