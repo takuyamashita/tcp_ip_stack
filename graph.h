@@ -30,6 +30,8 @@ struct node_{
     char node_name[NODE_NAME_SIZE];
     interface_t *intf[MAX_INTF_PER_NODE];
     glthread_t graph_glue;
+    unsigned int udp_port_number;
+    int udp_sock_fd;
     node_nw_prop_t node_nw_prop;
 };
 
@@ -118,7 +120,7 @@ static inline node_t *get_node_by_name(graph_t *topo, char *node_name){
 
     ITERATE_GLTHREAD_BEGIN(&topo->node_list, curr){
 	
-	graph_glue_to_node(curr);
+	node = graph_glue_to_node(curr);
 
 	if(strncmp(node->node_name, node_name, strlen(node_name)) == 0){
 	    return node;

@@ -6,7 +6,8 @@ OBJS=gluethread/glthread.o \
 	graph.o \
 	net.o \
 	nwcli.o \
-	topologies.o
+	topologies.o \
+	comm.o
 
 test:testapp.o ${OBJS} CommandParser/libcli.a
 	${CC} ${CFLAGS} -z muldefs testapp.o ${OBJS} -o test ${LIBS}
@@ -25,6 +26,9 @@ graph.o:graph.c graph.h
 
 topologies.o:topologies.c
 	${CC} ${CFLAGS} -c -I . topologies.c -o topologies.o
+
+comm.o:comm.c comm.h
+	${CC} ${CFLAGS} -c -I . comm.c -o comm.o
 
 #utils.o:utils.c
 #	${CC} ${CFLAGS} -c -I . utils.c -o utils.o

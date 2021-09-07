@@ -5,6 +5,8 @@
 
 #include "graph.h"
 
+extern init_udp_socket(node_t *node);
+
 /* 
  * nodeとnodeをlinkで繋げます
  * インターフェースもセットします
@@ -92,6 +94,9 @@ node_t *create_graph_node(graph_t *graph, char *node_name){
 	perror("calloc");
 	exit(1);
     }
+
+    /* udp socketをセット */
+    init_udp_socket(node);
 
     /* nodeの名前をセット */
     strncpy(node->node_name, node_name, NODE_NAME_SIZE);
