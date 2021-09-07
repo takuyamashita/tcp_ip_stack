@@ -10,5 +10,7 @@ int send_pkt_out(char *pkt, unsigned int pkt_size, interface_t *interface);
 
 int pkt_receive(node_t *node, interface_t *interface, char *pkt, unsigned int pkt_size);
 
+int send_pkt_flood(node_t *node, char *pkt, unsigned int pkt_size);
+
 #endif
 

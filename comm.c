@@ -270,4 +270,21 @@ int send_pkt_out(char *pkt, unsigned int pkt_size, interface_t *interface){
     return rc;
 }
 
+/* ノードの全てのインターフェースからパケットを送信します */
+int send_pkt_flood(node_t *node, char *pkt, unsigned int pkt_size){
+    
+    unsigned int i = 0;
+    interface_t *intf;
+
+    for(; i < MAX_INTF_PER_NODE; i++){
+	
+	intf = node->intf[i];
+	
+	if(!intf)
+	    return;
+	
+	send_pkt_out(pkt, pkt_size, intf);
+    }
+}
+
 
