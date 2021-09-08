@@ -146,3 +146,50 @@ void dump_nw_graph(graph_t *graph){
     }ITERATE_GLTHREAD_END(&graph->node_list, curr);
 }
 
+/*
+ * パケットを最大まで右(後ろに)に詰めます
+ * 詰めた後のpktのポインターを返します
+ *
+ * |                  MAX_PACKET_SIZE                    |
+ * | | | | | | | | | | | | | | | | | | | | | | | | | | | | 
+ * |IF_NAME_SIZE |   pkt_size    |         empty         |
+ * |             |            total_buffer_size          |
+ */
+char *pkt_buffer_shift_right(
+    char *pkt,
+    unsigned int pkt_size,
+    unsigned int total_buffer_size
+){
+    
+    char *temp = NULL;
+    bool_t need_temp_memory = FALSE;
+
+    if(pkt_size * 2 > total_buffer_size){
+	
+	need_temp_memory = TRUE;
+    }
+
+    /* pkt_sizeが2つ分入らない */
+    if(need_temp_memory){
+	
+	temp = calloc(1, pkt_size);
+	memcpy(temp, pkt, pkt_size);
+	memset(pkt, 0, total_pkt_size);
+
+	/* 右に詰めてセットする */
+	memcpy(pkt + (total_buffer_size - pkt_size), temp, pkt_size)
+
+	/* 解放 */
+	free(temp);
+
+	/* pointerは変わっていないので、ずらして返す */
+	return pkt + (total_buffer_size - pkt_size);
+    }
+
+    /* pke_sizeが2分入る */
+    memcpy(pkt + (total_buffer_size - pkt_size), pkt, pkt_size);
+    memset(pkt, 0, pkt_size);
+
+    return pkt + (total_buffer_size - pkt_size);
+}
+

@@ -50,14 +50,35 @@ static char recv_buffer[MAX_PACKET_BUFFER_SIZE];
 
 static char send_buffer[MAX_PACKET_BUFFER_SIZE];
 
+extern void layer2_frame_recv(
+    node_t *node,
+    interface_t *interface,
+    char *pkt,
+    unsigned int pkt_size
+);
+
 int pkt_receive(node_t *node, interface_t *interface, char *pkt, unsigned int pkt_size){
     
-    printf(
-	"msg recvd = %s, on node = %s, IIF = %s\n",
+/*
+ * |                  MAX_PACKET_SIZE                    |
+ * | | | | | | | | | | | | | | | | | | | | | | | | | | | | 
+ * |IF_NAME_SIZE |   pkt_size    |         empty         |
+ * |             |            total_buffer_size          |
+ */
+
+/*
+ * パケットを右に詰める
+ * 上位のプロトコルからデータが来た際に
+ * ヘッダを付けやすくできる(送信も簡単にできる)
+ */
+    pkt = pkt_buffer_shift_right(
 	pkt,
-	node->node_name,
-	interface->if_name
+	pkt_size,
+	MAX_PACKET_BUFFER_SIZE - IF_NAME_SIZE
     );
+
+    /* TODO:processing of the packet */
+    layer2_frame_recv(node, interface, pkt, pkt_size);
 
     return 0;
 }

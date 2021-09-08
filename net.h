@@ -22,7 +22,7 @@ typedef struct node_ node_t;
  * |c|  int  |
  * | | | | | | | | |
  */
-//#pragma pack(push,1)
+#pragma pack(push,1)
 
 /* 
  * 192.168.0.1
@@ -40,7 +40,7 @@ typedef struct mac_add_ {
     unsigned char mac[6];
 } mac_add_t;
 
-//#pragma pack(pop)
+#pragma pack(pop)
 
 
 typedef struct node_nw_prop_ {   
@@ -87,6 +87,12 @@ bool_t node_unset_intf_ip_address(node_t *node, char *local_if);
 void dump_nw_graph(graph_t *graph);
 void dump_node_nw_props(node_t *node);
 void dump_intf_props(interface_t *interface);
+
+char *pkt_buffer_shift_right(
+    char *pkt,
+    unsigned int pkt_size,
+    unsigned int total_buffer_size
+);
 
 #endif
 
