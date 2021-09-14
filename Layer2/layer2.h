@@ -7,6 +7,72 @@
 
 #pragma pack (push,1)
 
+typedef struct arp_hdr_ {
+    /*
+     * 2 bytes
+     * ハードウェアタイプ
+     * Ethernetは0001
+     */
+    short hw_type;
+
+    /*
+     * 2bytes
+     * Ethernetヘッダで使用できるものと同じ
+     * 0x0800 -> ipv4
+     */
+    short proto_type;
+
+    /*
+     * 1byte
+     * ハードウェアのアドレスの長さ(bytes)
+     * MACアドレスなら6
+     */
+    char hw_addr_len;
+
+    /*
+     * 1byte
+     * プロトコルアドレスの長さ
+     * プロトコルアドレスとはここでいうIPアドレス
+     */
+    char proto_addr_len;
+
+    /*
+     * 2 bytes
+     * requestかreplyかを示すフラグ 
+     */
+    short op_code;
+
+    /*
+     * 6bytes
+     * 送信元のハードウェアアドレス
+     * 本来は可変長
+     */
+    mac_add_t src_mac;
+
+    /*
+     * 4bytes
+     * 送信元プロトコルアドレス
+     * 本来は可変長
+     */
+    unsigned int src_ip;
+
+    /*
+     * 6bytes
+     * 宛先ハードウェアアドレス
+     * 本来は可変長
+     */
+    mac_add_t dst_mac;
+
+    /*
+     * 4bytes
+     * 宛先プロトコルアドレス
+     * 本来は可変長
+     */
+    unsigned int dst_ip;
+
+
+} arp_hdr_t;
+
 /* 
  * プリアンブルとsfdは入れない
  * 10101010....10101011がプリアンブル(とsfd)
