@@ -128,6 +128,20 @@ typedef struct arp_entry_ {
 
 GLTHREAD_TO_STRUCT(arp_glue_to_arp_entry, arp_entry_t, arp_glue);
 
+void init_arp_table(arp_table_t **arp_table);
+arp_entry_t *arp_table_lookup(arp_table_t *arp_table, char *ip_addr);
+void clear_arp_table(arp_table_t *arp_table);
+void delete_arp_table(arp_table_t *arp_table);
+bool_t arp_table_entry_add(arp_table_t *arp_table, arp_entry_t *arp_entry);
+void arp_table_update_from_arp_reply(
+    arp_table_t *arp_table,
+    arp_hdr_t *arp_hdr,
+    interface_t *iif
+);
+
+void dump_arp_table(arp_table_t *arp_table);
+
+
 /* l2の受け入れ可否を返します */
 static inline bool_t l2_frame_recv_qualify_on_interface(
     interface_t *interface,

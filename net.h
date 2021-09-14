@@ -42,12 +42,18 @@ typedef struct mac_add_ {
 
 #pragma pack(pop)
 
+typedef struct arp_table_ arp_table_t;
 
 typedef struct node_nw_prop_ {   
     /* loop back かどうか */
     bool_t is_lb_addr_config;
+    /* loop back address */
     ip_add_t lb_addr;
+    /* 1つのノードは1つのarp tableを持つ */
+    arp_table_t *arp_table;
 } node_nw_prop_t;
+
+extern void init_arp_table(arp_table_t *arp_table);
 
 /* nodeのネットワークプロパティの初期化 */
 static inline void init_node_nw_prop(node_nw_prop_t *node_nw_prop){
@@ -55,6 +61,8 @@ static inline void init_node_nw_prop(node_nw_prop_t *node_nw_prop){
     node_nw_prop->is_lb_addr_config = FALSE;
 
     memset(node_nw_prop->lb_addr.ip_addr, 0, 16);
+
+    init_arp_table(&(node_nw_prop->arp_table));
 }
 
 /* ネットワークインタフェースのプロパティ */
