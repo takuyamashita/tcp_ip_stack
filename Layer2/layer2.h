@@ -113,6 +113,21 @@ typedef struct ethernet_hdr_ {
 
 #pragma pack(pop)
 
+/* arp table */
+typedef struct arp_table_ {
+    glthread_t arp_entries;
+} arp_table_t;
+
+/* arp tableの1行 */
+typedef struct arp_entry_ {
+    ip_add_t ip_addr;
+    mac_add_t mac_addr;
+    char oif_name[IF_NAME_SIZE];
+    glthread_t arp_glue;
+} arp_entry_t;
+
+GLTHREAD_TO_STRUCT(arp_glue_to_arp_entry, arp_entry_t, arp_glue);
+
 /* l2の受け入れ可否を返します */
 static inline bool_t l2_frame_recv_qualify_on_interface(
     interface_t *interface,
