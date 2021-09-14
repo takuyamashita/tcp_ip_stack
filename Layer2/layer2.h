@@ -4,6 +4,7 @@
 
 #include "../net.h"
 #include "../gluethread/glthread.h"
+#include "../tcpconst.h"
 
 #pragma pack (push,1)
 
